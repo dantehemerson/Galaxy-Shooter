@@ -38,12 +38,16 @@ showGameOver(false) {
 
 	// Control para el Paddle(nave vaus)
 	Control* controlVaus = new Control;
-	controlVaus->addActionName(VausControl::LEFT_VAUS, "Izquierda Vaus");
-	controlVaus->addActionName(VausControl::RIGHT_VAUS, "Derecha Vaus");
+	controlVaus->addActionName(VausControl::LEFT_VAUS, "Izquierda Ship");
+	controlVaus->addActionName(VausControl::RIGHT_VAUS, "Derecha Ship");
 	controlVaus->addActionName(VausControl::SHOT, "Disparando");
+	controlVaus->addActionName(VausControl::UP_SHIP, "Arriba Ship");
+	controlVaus->addActionName(VausControl::DOWN_SHIP, "Abajo Ship");
 	controlVaus->setActionPeripheral(VausControl::LEFT_VAUS, app->getKeyboard(), ALLEGRO_KEY_LEFT, Peripheral::ON_PRESSING);
 	controlVaus->setActionPeripheral(VausControl::RIGHT_VAUS, app->getKeyboard(), ALLEGRO_KEY_RIGHT, Peripheral::ON_PRESSING);
 	controlVaus->setActionPeripheral(VausControl::SHOT, app->getKeyboard(), ALLEGRO_KEY_X, Peripheral::ON_PRESS);
+	controlVaus->setActionPeripheral(VausControl::UP_SHIP, app->getKeyboard(), ALLEGRO_KEY_UP, Peripheral::ON_PRESSING);
+	controlVaus->setActionPeripheral(VausControl::DOWN_SHIP, app->getKeyboard(), ALLEGRO_KEY_DOWN, Peripheral::ON_PRESSING);
 	controlVaus->setOwner(vaus);
 
 	Control* controlGame = new Control;

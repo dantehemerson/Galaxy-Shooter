@@ -12,7 +12,7 @@ namespace R {
 	namespace Constant {
 
 		// Frames por segundo.
-		static const int FPS = 90;
+		static const int FPS = 140;
 		static const int SIZE_FONT_VENUS_18 = 18;
 		static const int SIZE_FONT_VENUS_20 = 20;
 		static const int SIZE_FONT_VENUS_TITLES = 60;

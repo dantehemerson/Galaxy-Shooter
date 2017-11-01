@@ -6,10 +6,11 @@
 #include "Game.hpp"
 #include "Sound.hpp"
 #include "Level.hpp"
+#include <cstdio>
 
 Vaus::Vaus(const float& x, const float& y, Game* g) : game(g),
 state(VausState::NORMAL),
-velocity(4),
+velocity(2),
 lives(4) {
 	position.setPosition(x, y);
 	for (auto it = sprites.begin(); it != sprites.end(); it++) {
@@ -20,7 +21,7 @@ lives(4) {
 	int ticksL = 1;
 	// Añadiendo frames a la animación normal. 44,22
 	sprites[static_cast<size_t>(VausState::NORMAL)].setRepeat(false);
-	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 0, 394, 347, ticks, false);
+	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 0, 100, 88, ticks, false);
 
 
 	ticks = 8;
@@ -89,6 +90,16 @@ void Vaus::doAction(action_t action, int magnitute) {
 				position.setX(position.X() - velocity);
 			}
 			break;
+        case UP_SHIP:
+            if(!isDead()) {
+                position.setY(position.Y() - velocity);
+            }
+            break;
+        case DOWN_SHIP:
+            if(!isDead()) {
+                position.setY(position.Y() + velocity);
+            }
+            break;
     }
 
 //	if (action == SHOT) {
@@ -101,6 +112,7 @@ void Vaus::verifyLimits() {
 		position.setX(0);
 	}
 	else if (position.X() + getWidth() > 800) {
+        printf("width = %f\n", getWidth());
 		position.setX(800 - getWidth());
 	}
 }

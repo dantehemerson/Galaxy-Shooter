@@ -19,6 +19,8 @@ enum class VausState : size_t {
 enum  VausControl {
 	RIGHT_VAUS = 100, /*Para diferenciar*/
 	LEFT_VAUS,
+	UP_SHIP,
+	DOWN_SHIP,
 	SHOT
 };
 
