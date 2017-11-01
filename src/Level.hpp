@@ -7,7 +7,7 @@
 #include <list>
 
 #include "Actor.hpp"
-#include "Block.hpp"
+
 
 class Vaus;
 class Bonus;
@@ -32,7 +32,6 @@ public:
 	~Level();
 private:
 	int actualLevel;
-	std::vector<Block*> blocks;
 	std::list<Bonus*> bonuses;
 
 	Vaus* vaus;

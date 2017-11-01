@@ -16,7 +16,6 @@ using namespace std;
 
 
 Level::Level(const float& x, const float& y, Vaus* _vaus) : Actor(x, y),  vaus(_vaus) {
-	Block::referencePosition.setPosition(x, y);
 	actualLevel = 1;
 	showLvl = true;
 }
@@ -30,52 +29,14 @@ void Level::draw() const {
 //	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 180, ALLEGRO_ALIGN_CENTER, "%i", actualLevel);
 
 	if (showLvl) {
-		for (auto it = blocks.begin(); it != blocks.end(); it++) {
-			(*it)->draw();
-		}
-		for (auto it = bonuses.begin(); it != bonuses.end(); it++) {
-			(*it)->draw();
-		}
+
 	}
 
 }
 
 void Level::update() {
 
-	for (auto it = blocks.begin(); it != blocks.end(); it++) {
-		(*it)->update();
 
-		/* Colisión con las balas. */
-		for (auto itBullet = vaus->bullets.begin(); itBullet != vaus->bullets.end(); ) {
-
-
-			if ((*it)->getLives() > 0 &&
-				itBullet->position.Y() < ((*it)->position.Y() + (*it)->getHeight()) &&
-				itBullet->position.Y() > (*it)->position.Y() &&
-
-				(itBullet->position.X() + itBullet->getWidth() / 2) > (*it)->position.X() &&
-				(itBullet->position.X() + itBullet->getWidth() / 2) < ((*it)->position.X() + (*it)->getWidth())) {
-				itBullet = vaus->bullets.erase(itBullet);
-				(*it)->die();
-				Score::addToScore((*it)->getValue());
-
-				/* Bonus*/
-				if ((*it)->getLives() == 0) {
-					if ((*it)->getBonusType() != BonusType::NONE) {
-						if (bonuses.size() < 2) {
-							bonuses.push_back(new Bonus((*it)->position.X(), (*it)->position.Y(), (*it)->getBonusType()));
-						}
-					}
-				}
-			}
-			else if (itBullet->position.Y() < 24) {
-				itBullet = vaus->bullets.erase(itBullet);
-			}
-			else {
-				itBullet++;
-			}
-		}
-	}
 }
 
 void Level::setLevel(int level) {
@@ -85,15 +46,7 @@ void Level::setLevel(int level) {
 
 bool Level::empty() {
 	bool isempty = true;
-	for (auto it = blocks.begin(); it != blocks.end(); it++) {
-		if ((*it)->getType() != BlockType::GOLD) {
-			if ((*it)->getLives() > 0) {
-				isempty = false;
-				break;
-			}
-		}
-	}
-	return isempty;
+	return false;
 }
 
 int Level::getLevel() const {
@@ -108,13 +61,7 @@ void Level::clearBonuses() {
 }
 
 void Level::clearBlocks() {
-	/*Borra los bloques del nivel si es que hay.*/
-	for (auto it = blocks.begin(); it != blocks.end(); it++) {
-		if (*it) {
-			delete (*it);
-		}
-	}
-	blocks.clear();
+
 }
 
 
@@ -149,7 +96,7 @@ void Level::loadLevel() {
 		while (file >> type) {
 			coordX++;
 			if (type >= 1 && type <= 10) {
-				blocks.push_back(new Block(coordX - 1, coordY, static_cast<BlockType>(type)));
+
 			}
 			if (coordX % rows == 0) {
 				coordY++;
@@ -161,16 +108,7 @@ void Level::loadLevel() {
 		int randIndex;
 		int randType;
 		/* Lleando algunos bloques con items bonus */
-		for (size_t i = 1; i <= blocks.size() / 3; i++) { // serán 24
-			randIndex = rand() % blocks.size();
-			if (blocks.at(randIndex)->getBonusType() == BonusType::NONE) {
-				randType = rand() % 7;
-				blocks.at(randIndex)->setBonusType(BonusType(randType));
-			}
-			else {
-				i--;
-			}
-		}
+
 	}
 	else {
 		printf("No se pudo cargar el archivo %s \n", filename.c_str());
@@ -184,8 +122,6 @@ void Level::loadLevel() {
 
 
 Level::~Level() {
-	for (auto it = blocks.begin(); it != blocks.end(); it++) {
-		delete (*it);
-	}
+
 	clearBonuses();
 }
