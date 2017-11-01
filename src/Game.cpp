@@ -14,7 +14,6 @@
 #include "Vaus.hpp"
 #include "Keyboard.hpp"
 #include "Mouse.hpp"
-#include "Ball.hpp"
 #include "Pause.hpp"
 #include "IntroductionLevel.hpp"
 #include "Score.hpp"
@@ -136,7 +135,6 @@ void Game::update() {
 
 void Game::relive() {
 	vaus->position.setPosition(305, vaus->position.Y());
-	vaus->setState(VausState::RELIVE_ANIMATION);
 	vaus->clearBullets();
 	level->clearBonuses();
 

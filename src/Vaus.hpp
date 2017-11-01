@@ -13,18 +13,6 @@
 
 enum class VausState : size_t {
 	NORMAL = 0,
-	LARGE,
-	NORMAL_TO_LARGE,
-	LARGE_TO_NORMAL,
-	NORMAL_TO_CHARGED,
-	CHARGED_TO_NORMAL,
-	CHARGED,
-	LARGE_TO_CHARGED,
-	CHARGED_TO_LARGE,
-	DEAD_NORMAL,
-	DEAD_LARGE,
-	DEAD_CHARGED,
-	RELIVE_ANIMATION, // I dont know english
 	DEAD // Este no tiene animación solo se llama cuando el paddle muere.
 };
 
@@ -65,7 +53,7 @@ public:
 private:
 	Game* game;
 	VausState state;
-	std::array<Sprite, 13> sprites;
+	std::array<Sprite, 2> sprites;
 
 	int lives;
 	float velocity;
