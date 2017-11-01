@@ -1,0 +1,45 @@
+#Archivos de codeblocks, que no sirven para nada en el proyecto.
+*.depend
+*.layout
+
+# El archivo .cbp si lo incluí, para los que quieran utilizar codeblocks, 
+# que es el IDE en el que  hice el proyecto, ahí ya esta todo configurado
+# solo faltaría linkear con la libreria allegro.
+
+
+#archivos log, que genera allegro5 automáticamente
+*.log
+
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
