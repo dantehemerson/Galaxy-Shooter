@@ -15,7 +15,6 @@ class StageManager;
 class Level;
 class Vaus;
 class Border;
-class Ball;
 class Pause;
 class IntroductionLevel;
 class GameOver;
@@ -49,7 +48,6 @@ private:
 	GameOver* gameOver;
 	bool showIntro;
 	bool showGameOver;
-	std::vector<Ball*> balls;
 	bool pause;
 };
 

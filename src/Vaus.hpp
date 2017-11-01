@@ -8,7 +8,7 @@
 #include "Bullet.hpp"
 
 #include <array>
-#include <list>	
+#include <list>
 #include <vector>
 
 enum class VausState : size_t {
@@ -34,13 +34,11 @@ enum  VausControl {
 	SHOT
 };
 
-class Mouse;
-class Ball;
 class Game;
 
 class Vaus : public ControllableActor {
 public:
-	Vaus(const float& x, const float& y, Mouse* mouseControl, std::vector<Ball*>* balls, Game* g);
+	Vaus(const float& x, const float& y, Game* g);
 
 	virtual void draw() const override;
 	virtual void update() override;
@@ -49,9 +47,6 @@ public:
 	float getWidth() const;
 	float getHeight() const;
 	void verifyLimits();
-
-	/* Colisión con las pelotas*/
-	void collisionWhitBall();
 
 	/* Elimina todas las balas en la lista bullets. */
 	void clearBullets();
@@ -69,14 +64,11 @@ public:
 	std::list<Bullet> bullets; /* (:hail_dante*) */
 private:
 	Game* game;
-	Mouse* mouse;
 	VausState state;
 	std::array<Sprite, 13> sprites;
-	std::vector<Ball*>* balls;
 
 	int lives;
 	float velocity;
-	bool useMouse;
 };
 
 

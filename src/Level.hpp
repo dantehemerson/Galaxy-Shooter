@@ -9,13 +9,12 @@
 #include "Actor.hpp"
 #include "Block.hpp"
 
-class Ball;
 class Vaus;
 class Bonus;
 
 class Level : public Actor {
 public:
-	Level(const float& x, const float& y, std::vector<Ball*>* balls, Vaus* vaus);
+	Level(const float& x, const float& y, Vaus* vaus);
 	virtual void draw() const override;
 	virtual void update() override;
 
@@ -37,7 +36,6 @@ private:
 	std::list<Bonus*> bonuses;
 
 	Vaus* vaus;
-	std::vector<Ball*>* balls;
 	bool showLvl;
 };
 

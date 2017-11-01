@@ -8,12 +8,9 @@
 #include "Sound.hpp"
 #include "Level.hpp"
 
-Vaus::Vaus(const float& x, const float& y, Mouse* mouseControl, std::vector<Ball*>* _balls, Game* g) : game(g),
-mouse(mouseControl),
+Vaus::Vaus(const float& x, const float& y, Game* g) : game(g),
 state(VausState::NORMAL),
 velocity(6),
-useMouse(false),
-balls(_balls),
 lives(4) {
 	position.setPosition(x, y);
 	for (auto it = sprites.begin(); it != sprites.end(); it++) {
@@ -40,7 +37,7 @@ lives(4) {
 	sprites[static_cast<size_t>(VausState::LARGE)].addFrame(R::Image::PADDLE, 0, 132, 66, 22, ticks, true);
 	sprites[static_cast<size_t>(VausState::LARGE)].addFrame(R::Image::PADDLE, 0, 110, 66, 22, ticks, true);
 
-	// NormalToLarge 
+	// NormalToLarge
 	sprites[static_cast<size_t>(VausState::NORMAL_TO_LARGE)].addFrame(R::Image::PADDLE, 0, 0, 44, 22, ticks, true);
 	sprites[static_cast<size_t>(VausState::NORMAL_TO_LARGE)].addFrame(R::Image::PADDLE, 210, 132, 46, 22, ticksL, true);
 	sprites[static_cast<size_t>(VausState::NORMAL_TO_LARGE)].addFrame(R::Image::PADDLE, 206, 110, 50, 22, ticksL, true);
@@ -84,7 +81,7 @@ lives(4) {
 	sprites[static_cast<size_t>(VausState::NORMAL_TO_CHARGED)].addFrame(R::Image::PADDLE, 146, 220, 44, 22, ticks, true);
 
 
-	// Charged to normal es lo mismo que normal To charged pero en orden inverso, ojo esto podria mejorarse si 
+	// Charged to normal es lo mismo que normal To charged pero en orden inverso, ojo esto podria mejorarse si
 	// se crea una función para ir de adelante hacia atras en el sprite.
 	sprites[static_cast<size_t>(VausState::CHARGED_TO_NORMAL)].addFrame(R::Image::PADDLE, 146, 220, 44, 22, ticks, true);
 	sprites[static_cast<size_t>(VausState::CHARGED_TO_NORMAL)].addFrame(R::Image::PADDLE, 148, 198, 42, 22, ticks, true);
@@ -203,7 +200,7 @@ lives(4) {
 	sprites[static_cast<size_t>(VausState::DEAD_CHARGED)].addFrame(R::Image::PADDLE, 299, 654, 121, 49, ticks, false, 0, -13);
 	sprites[static_cast<size_t>(VausState::DEAD_CHARGED)].addFrame(R::Image::PADDLE, 682, 963, 122, 22, ticksAfter, false); /*Trasparente*/
 
-										
+
 	ticks = 1; /*Animación revivir*/
 	sprites[static_cast<size_t>(VausState::RELIVE_ANIMATION)].addFrame(R::Image::PADDLE, 682, 963, 88, 22, 10, false);
 	sprites[static_cast<size_t>(VausState::RELIVE_ANIMATION)].addFrame(R::Image::PADDLE, 0, 848, 88, 22, ticks);
@@ -238,7 +235,7 @@ void Vaus::draw() const {
 }
 
 void Vaus::update() {
-	
+
 	sprites[static_cast<size_t>(state)].update();
 	switch (state) {
 		case VausState::NORMAL_TO_LARGE:
@@ -269,7 +266,7 @@ void Vaus::update() {
 				state = VausState::NORMAL;
 			}
 			break;
-	
+
 		default:
 			break;
 	}
@@ -278,8 +275,6 @@ void Vaus::update() {
 	for (auto it = bullets.begin(); it != bullets.end(); it++) {
 		it->update();
 	}
-
-	collisionWhitBall();
 
 	if (isDead()) {
 		if (sprites[static_cast<size_t>(state)].animationFinish()) {
@@ -294,16 +289,14 @@ void Vaus::update() {
 		}
 
 	}
-	if (useMouse) { // Si useMouse es true entonces se coloca la nave en la posición del mouse.
-		position.setX(mouse->getX() - getWidth() / 2);
-	}
+
 	verifyLimits();
 }
 
 void Vaus::doAction(action_t action, int magnitute) {
-	if (!useMouse) {
-		switch (action) {
-		case RIGHT_VAUS:
+
+    switch (action) {
+        case RIGHT_VAUS:
 			if (!isDead()) {
 				position.setX(position.X() + velocity);
 			}
@@ -313,8 +306,7 @@ void Vaus::doAction(action_t action, int magnitute) {
 				position.setX(position.X() - velocity);
 			}
 			break;
-		}
-	}
+    }
 
 	if (action == SHOT) {
 		if (state == VausState::CHARGED) {
@@ -326,14 +318,7 @@ void Vaus::doAction(action_t action, int magnitute) {
 			Sound::playSample(R::Sample::SHOT);
 		}
 		else if (state == VausState::NORMAL) {
-			/* Lanza la bola.*/
-			for (auto it = balls->begin(); it != balls->end(); it++) {
-				if ((*it)->isStopped()) {
-					(*it)->setDirectionVertical(-1);
-					Sound::playSample(R::Sample::RELEASE);
-					(*it)->setStopped(false);
-				}
-			}
+
 		}
 	}
 }
@@ -442,76 +427,6 @@ float Vaus::getWidth() const {
 
 float Vaus::getHeight() const {
 	return 22;
-}
-
-void Vaus::collisionWhitBall() {
-	static float centerX;
-	static bool dead;
-
-	dead = true; /* True si es que existe pelotas, false de otro modo. */
-	for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-
-		/*Comprobando si la pelota salió hacia abajo entonces perdio*/
-		if ((*itBall)->position.Y() + (*itBall)->getHeight() > 610) {
-			(*itBall)->die();
-			/*Coloca en una posición para que no compare, pero no se muestra.*/
-			(*itBall)->position.setPosition(100, 300);
-		}
-
-
-		if ((*itBall)->enable()) {
-			dead = false;
-			centerX = (*itBall)->position.X() + (*itBall)->getWidth() / 2;
-			if ((*itBall)->isStopped()) {
-				verifyLimits();
-				(*itBall)->position.setX(position.X() + (*itBall)->getDiff());
-			}
-
-			// Esta dentro de vaus horizontal
-			if (centerX > position.X() && centerX < (position.X() + getWidth())) {
-				// Choca por arriba
-				if (((*itBall)->position.Y() + (*itBall)->getHeight() > position.Y()) &&
-					((*itBall)->position.Y() + (*itBall)->getHeight() < (position.Y() + getHeight()))) {
-
-					(*itBall)->setDirectionVertical(-1); // La pelota va hacia arriba
-					(*itBall)->generateAngle(30, 90);
-					if ((*itBall)->getState() == BallState::STICKY) {
-						(*itBall)->setStopped(true);
-						(*itBall)->position.setY(position.Y() - (*itBall)->getHeight());
-						(*itBall)->setDiff((*itBall)->position.X() - position.X());
-					}
-					else {
-						Sound::playSample(R::Sample::RELEASE);
-					}
-				}
-			}
-
-			// Esta dentro de Vaus vertical
-			if ((((*itBall)->position.Y() + (*itBall)->getHeight()) > position.Y()) &&
-				((*itBall)->position.Y() < (position.Y() + getHeight()))) {
-
-				// Choca por la izquierda
-				if ((((*itBall)->position.X() + (*itBall)->getWidth()) > position.X()) &&
-					(((*itBall)->position.X() + (*itBall)->getWidth()) < position.X() + 20)) {
-					(*itBall)->setDirectionHorizontal(-1); // Va a la izquierda
-				}
-
-				// Choca por la derecha
-				if ((*itBall)->position.X() < (position.X() + getWidth()) &&
-					((*itBall)->position.X() >  (position.X() + getWidth() - 20))) {
-					(*itBall)->setDirectionHorizontal(1); // Va a la izquierda
-				}
-
-			}
-		}
-	}
-
-	if (dead) { // No hay ninguna pelota
-		setState(VausState::DEAD);
-		clearBullets();
-		game->getLevel()->clearBonuses();
-	}
-
 }
 
 void Vaus::clearBullets() {

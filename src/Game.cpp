@@ -36,15 +36,8 @@ showGameOver(false) {
 	actorManager = new ActorManager();
 	stageManager = new StageManager(actorManager);
 
-	balls.push_back(new Ball(300, 300)); // Solo tres balls
-	balls.push_back(new Ball(130, 430));
-	balls.push_back(new Ball(340, 420));
-	balls[0]->die();
-	balls[1]->die();
-
-
 	gameOver = new GameOver;
-	vaus = new Vaus(520, 560, app->getMouse(), &balls, this);
+	vaus = new Vaus(520, 560, this);
 
 	// Control para el Paddle(nave vaus)
 	Control* controlVaus = new Control;
@@ -71,17 +64,15 @@ showGameOver(false) {
 	//space + 22
 	actorManager->add(border);
 
-	level = new Level(64 + 24, 24, &balls, vaus);
+	level = new Level(64 + 24, 24, vaus);
 	introLevel = new IntroductionLevel(level);
 
 	actorManager->add(level);
 
 	actorManager->add(new Score);
-	
+
 	pauseGame = new Pause(100, 100, this, app->getMouse(), app->getKeyboard());
-	for (auto it = balls.begin(); it != balls.end(); it++) {
-		actorManager->add(*it);
-	}
+
 	actorManager->add(vaus);
 
 	level->setLevel(1);
@@ -148,13 +139,6 @@ void Game::relive() {
 	vaus->setState(VausState::RELIVE_ANIMATION);
 	vaus->clearBullets();
 	level->clearBonuses();
-	balls.at(0)->setLives(1);
-	balls.at(1)->setLives(0);
-	balls.at(2)->setLives(0);
-	balls.at(0)->position.setPosition(vaus->position.X() + balls.at(0)->getDiff() + 1, vaus->position.Y() - balls.at(0)->getHeight());
-	balls.at(0)->setStopped(true);
-	balls.at(0)->setState(BallState::NORMAL);
-	//update();
 
 }
 

@@ -6,7 +6,6 @@
 #include <fstream>
 
 #include "Utils.hpp"
-#include "Ball.hpp"
 #include "Vaus.hpp"
 #include "Bonus.hpp"
 #include "Score.hpp"
@@ -16,7 +15,7 @@
 using namespace std;
 
 
-Level::Level(const float& x, const float& y, vector<Ball*>* _balls, Vaus* _vaus) : Actor(x, y), balls(_balls), vaus(_vaus) {
+Level::Level(const float& x, const float& y, Vaus* _vaus) : Actor(x, y),  vaus(_vaus) {
 	Block::referencePosition.setPosition(x, y);
 	actualLevel = 1;
 	showLvl = true;
@@ -42,85 +41,6 @@ void Level::draw() const {
 }
 
 void Level::update() {
-	for (auto itBonus = bonuses.begin(); itBonus != bonuses.end(); ) {
-		(*itBonus)->update();
-
-		if (((*itBonus)->position.Y() + (*itBonus)->getHeight()) > vaus->position.Y() &&
-			((*itBonus)->position.Y() + (*itBonus)->getHeight()) < (vaus->position.Y() + vaus->getHeight()) &&
-			((*itBonus)->position.X() + (*itBonus)->getWidth() - 3) > vaus->position.X() &&
-			((*itBonus)->position.X() - 3) < (vaus->position.X() + vaus->getWidth())) {
-			bool dead = vaus->getState() == VausState::DEAD_CHARGED || vaus->getState() == VausState::DEAD_NORMAL || vaus->getState() == VausState::DEAD_LARGE;
-			if (!dead) {
-				switch ((*itBonus)->getType()) {
-				case BonusType::L:
-					for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-						(*itBall)->setState(BallState::NORMAL);
-						(*itBall)->setStopped(false);
-					}
-					vaus->setState(VausState::CHARGED);
-					break;
-				case BonusType::E:
-					for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-						(*itBall)->setState(BallState::NORMAL);
-						(*itBall)->setStopped(false);
-
-					}
-					vaus->setState(VausState::LARGE);
-					break;
-				case BonusType::B:
-					for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-						(*itBall)->setState(BallState::NORMAL);
-						(*itBall)->setStopped(false);
-
-					}
-					vaus->setState(VausState::NORMAL);
-					break;
-				case BonusType::C:
-					for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-						(*itBall)->setState(BallState::STICKY);
-					}
-					vaus->setState(VausState::NORMAL);
-					break;
-				case BonusType::P:
-					vaus->setLives(vaus->getLives() + 1);
-					for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-						(*itBall)->setState(BallState::NORMAL);
-						(*itBall)->setStopped(false);
-
-					}
-					vaus->setState(VausState::NORMAL);
-					break;
-				case BonusType::S:
-					for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-						(*itBall)->setState(BallState::NORMAL);
-						(*itBall)->setStopped(false);
-
-					}
-					vaus->setState(VausState::NORMAL);
-					break;
-				case BonusType::D:
-					for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-						(*itBall)->setState(BallState::NORMAL);
-						(*itBall)->setStopped(false);
-
-					}
-					vaus->setState(VausState::NORMAL);
-					break;
-				default:
-					break;
-				}
-			}
-			delete (*itBonus);
-			itBonus = bonuses.erase(itBonus);
-		}
-		else if ((*itBonus)->position.Y() > 600) {
-			delete (*itBonus);
-			itBonus = bonuses.erase(itBonus);
-		}
-		else {
-			itBonus++;
-		}
-	}
 
 	for (auto it = blocks.begin(); it != blocks.end(); it++) {
 		(*it)->update();
@@ -155,84 +75,6 @@ void Level::update() {
 				itBullet++;
 			}
 		}
-
-
-
-		if ((*it)->getLives() > 0) {
-			/* Colisión Pelotas*/
-			for (auto itBall = balls->begin(); itBall != balls->end(); itBall++) {
-				if ((*itBall)->enable()) {
-
-					if (((*itBall)->position.Y() + (*itBall)->getHeight() / 2) >= (*it)->position.Y() &&
-						((*itBall)->position.Y() + (*itBall)->getHeight() / 2) <= ((*it)->position.Y() + (*it)->getHeight())) {
-
-						if (((*itBall)->position.X() + (*itBall)->getWidth()) >= (*it)->position.X() &&
-							((*itBall)->position.X() + (*itBall)->getWidth()) < ((*it)->position.X() + (*it)->getWidth() / 2)) {
-							(*itBall)->invertDirectionHorizontal();
-							Sound::playSample(R::Sample::BOUNCE); /// TEST SONIDO --------
-
-
-							(*it)->die();
-							Score::addToScore((*it)->getValue());
-
-							/* Bonus*/
-							if ((*it)->getLives() == 0) {
-								if ((*it)->getBonusType() != BonusType::NONE) {
-									if (bonuses.size() < 2) {
-										bonuses.push_back(new Bonus((*it)->position.X(), (*it)->position.Y(), (*it)->getBonusType()));
-									}
-								}
-							}
-
-						}
-						else if ((*itBall)->position.X() <= ((*it)->position.X() + (*it)->getWidth()) &&
-							(*itBall)->position.X()	> ((*it)->position.X() + (*it)->getWidth() / 2)) {
-							(*itBall)->invertDirectionHorizontal();
-							Sound::playSample(R::Sample::BOUNCE); /// TEST SONIDO --------
-
-							(*it)->die();
-							Score::addToScore((*it)->getValue());
-							if ((*it)->getLives() == 0) {
-								if ((*it)->getBonusType() != BonusType::NONE && bonuses.size() < 2) {
-									bonuses.push_back(new Bonus((*it)->position.X(), (*it)->position.Y(), (*it)->getBonusType()));
-								}
-							}
-						}
-					}
-					if (((*itBall)->position.X() + (*itBall)->getWidth() / 2) >= (*it)->position.X() &&
-						((*itBall)->position.X() + (*itBall)->getWidth() / 2) <= ((*it)->position.X() + (*it)->getWidth())) {
-
-						if (((*itBall)->position.Y() + (*itBall)->getHeight()) >= (*it)->position.Y() &&
-							((*itBall)->position.Y() + (*itBall)->getHeight()) < ((*it)->position.Y() + (*it)->getHeight())) {
-							(*itBall)->invertDirectionVertical();
-							Sound::playSample(R::Sample::BOUNCE); /// TEST SONIDO --------
-
-							(*it)->die();
-							Score::addToScore((*it)->getValue());
-							if ((*it)->getLives() == 0) {
-								if ((*it)->getBonusType() != BonusType::NONE && bonuses.size() < 2) {
-									bonuses.push_back(new Bonus((*it)->position.X(), (*it)->position.Y(), (*it)->getBonusType()));
-								}
-							}
-						}
-						else if ((*itBall)->position.Y() < ((*it)->position.Y() + (*it)->getHeight()) &&
-							(*itBall)->position.Y() > (*it)->position.Y()) {
-							(*itBall)->invertDirectionVertical();
-							Sound::playSample(R::Sample::BOUNCE); /// TEST SONIDO --------
-
-							(*it)->die();
-							Score::addToScore((*it)->getValue());
-							if ((*it)->getLives() == 0) {
-								if ((*it)->getBonusType() != BonusType::NONE && bonuses.size() < 2) {
-									bonuses.push_back(new Bonus((*it)->position.X(), (*it)->position.Y(), (*it)->getBonusType()));
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
 	}
 }
 
@@ -319,7 +161,7 @@ void Level::loadLevel() {
 		int randIndex;
 		int randType;
 		/* Lleando algunos bloques con items bonus */
-		for (size_t i = 1; i <= blocks.size() / 3; i++) { // serán 24 
+		for (size_t i = 1; i <= blocks.size() / 3; i++) { // serán 24
 			randIndex = rand() % blocks.size();
 			if (blocks.at(randIndex)->getBonusType() == BonusType::NONE) {
 				randType = rand() % 7;
