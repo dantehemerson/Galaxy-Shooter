@@ -24,10 +24,10 @@ Level::Level(const float& x, const float& y, Vaus* _vaus) : Actor(x, y),  vaus(_
 void Level::draw() const {
 
 	// Dibuja el texto nivel
-	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOWN_TITLE, 722, 152, ALLEGRO_ALIGN_CENTER, "LEVEL");
-	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 150, ALLEGRO_ALIGN_CENTER, "LEVEL");
-	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOW_GRAY, 722, 182, ALLEGRO_ALIGN_CENTER, "%i", actualLevel);
-	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 180, ALLEGRO_ALIGN_CENTER, "%i", actualLevel);
+//	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOWN_TITLE, 722, 152, ALLEGRO_ALIGN_CENTER, "LEVEL");
+//	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 150, ALLEGRO_ALIGN_CENTER, "LEVEL");
+//	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOW_GRAY, 722, 182, ALLEGRO_ALIGN_CENTER, "%i", actualLevel);
+//	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 180, ALLEGRO_ALIGN_CENTER, "%i", actualLevel);
 
 	if (showLvl) {
 		for (auto it = blocks.begin(); it != blocks.end(); it++) {

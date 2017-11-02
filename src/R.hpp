@@ -119,7 +119,7 @@ namespace R {
 		imagesUrl = {
 		"resources/images/arkanoid_logo.png",
 		"resources/images/items.png",
-		"resources/images/paddle.png",
+		"resources/images/spaceship_1.png",
 		"resources/images/background1.png",
 		"resources/images/button.png",
 		"resources/images/button_focused.png",

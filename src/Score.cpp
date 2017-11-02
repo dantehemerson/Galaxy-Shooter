@@ -13,10 +13,10 @@ Score::Score() {
 }
 
 void Score::draw() const {
-	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOWN_TITLE, 722, 242, ALLEGRO_ALIGN_CENTER, "SCORE");
-	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 240, ALLEGRO_ALIGN_CENTER, "SCORE");
-	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOW_GRAY, 722, 272, ALLEGRO_ALIGN_CENTER, "%i", scorePlayer);
-	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 270, ALLEGRO_ALIGN_CENTER, "%i", scorePlayer);
+//	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOWN_TITLE, 722, 242, ALLEGRO_ALIGN_CENTER, "SCORE");
+//	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 240, ALLEGRO_ALIGN_CENTER, "SCORE");
+//	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOW_GRAY, 722, 272, ALLEGRO_ALIGN_CENTER, "%i", scorePlayer);
+//	al_draw_textf(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 270, ALLEGRO_ALIGN_CENTER, "%i", scorePlayer);
 
 }
 

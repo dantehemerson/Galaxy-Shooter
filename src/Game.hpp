@@ -42,7 +42,6 @@ private:
 	StageManager* stageManager;
 	Level* level;
 	Vaus* vaus;
-	Border* border;
 	Pause* pauseGame;
 	IntroductionLevel* introLevel;
 	GameOver* gameOver;

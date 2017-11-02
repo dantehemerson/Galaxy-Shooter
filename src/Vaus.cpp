@@ -9,7 +9,7 @@
 
 Vaus::Vaus(const float& x, const float& y, Game* g) : game(g),
 state(VausState::NORMAL),
-velocity(6),
+velocity(4),
 lives(4) {
 	position.setPosition(x, y);
 	for (auto it = sprites.begin(); it != sprites.end(); it++) {
@@ -19,13 +19,8 @@ lives(4) {
 	int ticks = 9;
 	int ticksL = 1;
 	// Añadiendo frames a la animación normal. 44,22
-	sprites[static_cast<size_t>(VausState::NORMAL)].setRepeat(true);
-	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 0, 44, 22, ticks, true);
-	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 22, 44, 22, ticks, true);
-	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 44, 44, 22, ticks, true);
-	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 66, 44, 22, ticks, true); //
-	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 44, 44, 22, ticks, true);
-	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 22, 44, 22, ticks, true);
+	sprites[static_cast<size_t>(VausState::NORMAL)].setRepeat(false);
+	sprites[static_cast<size_t>(VausState::NORMAL)].addFrame(R::Image::PADDLE, 0, 0, 394, 347, ticks, false);
 
 
 	ticks = 8;
@@ -48,11 +43,11 @@ void Vaus::draw() const {
 	for (auto it = bullets.begin(); it != bullets.end(); it++) {
 		it->draw();
 	}
-	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOWN_TITLE, 722, 342, ALLEGRO_ALIGN_CENTER, "LIVES");
-	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 340, ALLEGRO_ALIGN_CENTER, "LIVES");
-	for (int i = 0; i < lives; i++) {
-		al_draw_bitmap_region(Gallery::getSingleton().getImage(R::Image::ITEMS), 684, 176, 32, 32, 660 + 30 * i, 370, NULL);
-	}
+//	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::SHADOWN_TITLE, 722, 342, ALLEGRO_ALIGN_CENTER, "LIVES");
+//	al_draw_text(Gallery::getSingleton().getFont(R::Font::VENUS_20), R::Color::WHITE, 720, 340, ALLEGRO_ALIGN_CENTER, "LIVES");
+//	for (int i = 0; i < lives; i++) {
+//		al_draw_bitmap_region(Gallery::getSingleton().getImage(R::Image::ITEMS), 684, 176, 32, 32, 660 + 30 * i, 370, NULL);
+//	}
 }
 
 void Vaus::update() {
@@ -102,11 +97,11 @@ void Vaus::doAction(action_t action, int magnitute) {
 
 /* Verifica que la posición de la nave no se salga de los límites horizontales. */
 void Vaus::verifyLimits() {
-	if (position.X() < 88) {
-		position.setX(88);
+	if (position.X() < 0) {
+		position.setX(0);
 	}
-	else if (position.X() + getWidth() > 613) {
-		position.setX(613 - getWidth());
+	else if (position.X() + getWidth() > 800) {
+		position.setX(800 - getWidth());
 	}
 }
 

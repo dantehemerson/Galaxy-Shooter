@@ -7,7 +7,6 @@
 #include "ControlManager.hpp"
 #include "ActorManager.hpp"
 #include "StageManager.hpp"
-#include "Border.hpp"
 #include "Gallery.hpp"
 #include "Level.hpp"
 #include "Frame.hpp"
@@ -26,7 +25,6 @@ controlManager(nullptr),
 actorManager(nullptr),
 stageManager(nullptr),
 level(nullptr),
-border(nullptr),
 pauseGame(nullptr),
 pause(false),
 showIntro(true),
@@ -36,7 +34,7 @@ showGameOver(false) {
 	stageManager = new StageManager(actorManager);
 
 	gameOver = new GameOver;
-	vaus = new Vaus(520, 560, this);
+	vaus = new Vaus(520, 200, this);
 
 	// Control para el Paddle(nave vaus)
 	Control* controlVaus = new Control;
@@ -59,9 +57,7 @@ showGameOver(false) {
 	controlManager->addControl(controlVaus);
 	controlManager->addPeripheral(app->getKeyboard());
 
-	border = new Border(64, 0);
-	//space + 22
-	actorManager->add(border);
+
 
 	level = new Level(64 + 24, 24, vaus);
 	introLevel = new IntroductionLevel(level);
@@ -89,7 +85,6 @@ void Game::draw() const {
 
 void Game::update() {
 	stageManager->update();
-	border->drawRight();
 	if (showGameOver) {
 		gameOver->draw();
 		gameOver->update();
