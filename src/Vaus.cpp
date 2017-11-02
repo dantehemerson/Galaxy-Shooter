@@ -7,6 +7,10 @@
 #include "Sound.hpp"
 #include "Level.hpp"
 #include <cstdio>
+#include <vector>
+
+
+using namespace std;
 
 Vaus::Vaus(const float& x, const float& y, Game* g) : game(g),
 state(VausState::NORMAL),
@@ -56,9 +60,14 @@ void Vaus::update() {
 	sprites[static_cast<size_t>(state)].update();
 
 	// Actualiza las balas
-	for (auto it = bullets.begin(); it != bullets.end(); it++) {
+	for (auto it = bullets.begin(); it != bullets.end(); it++ ) {
 		it->update();
+		if(it->position.Y() <= 0) { // Acá se elminan las balas cuando ya no se muestran en la ventana
+            it = bullets.erase(it);
+		}
 	}
+
+
 
 	if (isDead()) {
 		if (sprites[static_cast<size_t>(state)].animationFinish()) {
@@ -102,8 +111,16 @@ void Vaus::doAction(action_t action, int magnitute) {
             break;
     }
 
-//	if (action == SHOT) {
-//	}
+	if (action == SHOT) {
+        verifyLimits();
+        Bullet b(this->position.X() + 7, this->position.Y());
+        bullets.push_back(b);
+        b.position.setX(this->position.X() + 60);
+        bullets.push_back(b);
+        Sound::playSample(R::Sample::SHOT);
+        printf("size_bullets = %d\n", bullets.size());
+	}
+
 }
 
 /* Verifica que la posición de la nave no se salga de los límites horizontales. */
