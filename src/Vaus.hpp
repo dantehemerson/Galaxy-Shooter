@@ -49,9 +49,7 @@ public:
 	void setLives(int value);
 	int getLives() const;
 
-
-
-	std::list<Bullet> bullets; /* (:hail_dante*) */
+	std::list<Bullet> bullets;
 private:
 	Game* game;
 	VausState state;

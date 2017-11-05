@@ -16,6 +16,7 @@ using namespace std;
 #include "Mouse.hpp"
 #include "Keyboard.hpp"
 #include "Sound.hpp"
+#include "Background.hpp"
 
 Menu::Menu(Application*const app) : Interface(app),
 controlManager(nullptr),
@@ -51,6 +52,8 @@ stageManager(nullptr)
 	controlManager->addPeripheral(app->getKeyboard());
 	controlManager->addPeripheral(app->getMouse());
 
+	actorManager->add(new Background(0, 0));
+
 	for (auto it = buttons.begin(); it != buttons.end(); it++) {
 		actorManager->add(*it);
 	}
@@ -61,18 +64,14 @@ stageManager(nullptr)
 }
 
 void Menu::draw() const {
-	al_draw_bitmap(Gallery::getSingleton().getImage(R::Image::BACKGROUND1), 0, 0, 0);
-	al_draw_bitmap(Gallery::getSingleton().getImage(R::Image::ARKANOID_LOGO), 100, 0, NULL);
-
-	for (auto it = buttons.begin(); it != buttons.end(); it++) {
-		(*it)->draw();
-	}
+    al_clear_to_color(R::Color::BLACK);
+    stageManager->update();
+    al_draw_bitmap(Gallery::getSingleton().getImage(R::Image::ARKANOID_LOGO), 100, 0, NULL);
 }
 
 void Menu::update() {
-	stageManager->update();
+    actorManager->update();
 	controlManager->update();
-	stageManager->update();
 
 	if (app->getMouse()->changedPosition()) {
 		al_show_mouse_cursor(app->getDisplay());

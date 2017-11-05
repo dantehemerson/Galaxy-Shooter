@@ -120,7 +120,7 @@ namespace R {
 		"resources/images/arkanoid_logo.png",
 		"resources/images/items.png",
 		"resources/images/spaceship_1.png",
-		"resources/images/background1.png",
+		"resources/images/background_1.jpg",
 		"resources/images/button.png",
 		"resources/images/button_focused.png",
 		"resources/images/cplusplus.png",

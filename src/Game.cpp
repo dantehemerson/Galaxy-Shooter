@@ -34,7 +34,7 @@ showGameOver(false) {
 	stageManager = new StageManager(actorManager);
 
 	gameOver = new GameOver;
-	vaus = new Vaus(520, 200, this);
+	vaus = new Vaus(500, 500, this);
 
 	// Control para el Paddle(nave vaus)
 	Control* controlVaus = new Control;
@@ -98,7 +98,7 @@ void Game::update() {
 		}
 	}
 	else if (showIntro) {
-		vaus->position.setPosition(305, vaus->position.Y());
+		vaus->position.setPosition(350, vaus->position.Y());
 		introLevel->draw();
 		introLevel->update();
 		if (introLevel->animationFinish()) {
