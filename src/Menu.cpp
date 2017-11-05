@@ -53,7 +53,6 @@ stageManager(nullptr)
 	controlManager->addPeripheral(app->getMouse());
 
 	actorManager->add(new Background(0, 0));
-
 	for (auto it = buttons.begin(); it != buttons.end(); it++) {
 		actorManager->add(*it);
 	}
