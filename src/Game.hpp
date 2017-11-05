@@ -5,6 +5,7 @@
 
 #include "Interface.hpp"
 #include "ControllableObject.hpp"
+#include "Background.hpp"
 
 #include <vector>
 
@@ -45,6 +46,7 @@ private:
 	Pause* pauseGame;
 	IntroductionLevel* introLevel;
 	GameOver* gameOver;
+	Background background;
 	bool showIntro;
 	bool showGameOver;
 	bool pause;

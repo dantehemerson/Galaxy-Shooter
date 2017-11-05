@@ -14,8 +14,8 @@ public:
     ~Background();
 private:
     static float velocity;
-    int value;
-    Vector2 posGlobal;
+    static int value;
+    static Vector2 posGlobal;
 };
 
 

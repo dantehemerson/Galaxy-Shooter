@@ -5,9 +5,11 @@
 
 
 float Background::velocity =  1;
+int Background::value = -1;
+Vector2 Background::posGlobal;
 
 Background::Background(int x, int y) : Actor(x, y) {
-    value = -1;
+
 }
 
 

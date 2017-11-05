@@ -66,10 +66,9 @@ showGameOver(false) {
 	level = new Level(64 + 24, 24, vaus);
 	introLevel = new IntroductionLevel(level);
 
+
 	actorManager->add(level);
-
 	actorManager->add(new Score);
-
 	pauseGame = new Pause(100, 100, this, app->getMouse(), app->getKeyboard());
 
 	actorManager->add(vaus);
@@ -78,16 +77,18 @@ showGameOver(false) {
 }
 
 void Game::draw() const {
+    background.draw();
 	static Gallery& gallery = Gallery::getSingleton();
 	static auto fSmall = gallery.getFont(R::Font::VENUS_SMALL);
 	static auto f = gallery.getFont(R::Font::VENUS_20);
 	static auto fBig = gallery.getFont(R::Font::VENUS_TITLES);
 
 	/* Fondo */
-	al_draw_bitmap(gallery.getImage(R::Image::BACKGROUND1), 0, 0, NULL);
+	//al_draw_bitmap(gallery.getImage(R::Image::BACKGROUND1), 0, 0, NULL);
 }
 
 void Game::update() {
+    background.update();
 	stageManager->update();
 	if (showGameOver) {
 		gameOver->draw();
